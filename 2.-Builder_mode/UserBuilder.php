@@ -1,11 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
- class User
+ class UserBuilder
 {
-    private const MIN_ROLE_TO_ADMIN = 2;
-
     private $id;
     private $name;
     private $role;
@@ -16,19 +12,29 @@ use PHPUnit\Framework\TestCase;
      * @param $name
      * @param $role
      */
-    public function __construct($id, $name, $role)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->name = $name;
+        $this->id = 'some-id';
+        $this->name = 'some-name';
+        $this->role = 4;
+    }
+
+     /**
+      * @param int $role
+      * @return $this
+      */
+    public function withThisRole (int $role)
+    {
         $this->role = $role;
+        return $this;
     }
 
-
-    public function canManageAsAdmin(): bool
+    public function build()
     {
-        return $this->role >= self::MIN_ROLE_TO_ADMIN;
+        return new User($this->id,$this->name,$this->role);
     }
-    /**
+
+     /**
      * @return mixed
      */
     public function getId()
@@ -51,21 +57,4 @@ use PHPUnit\Framework\TestCase;
     {
         $this->name = $name;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param mixed $role
-     */
-    public function setRole($role): void
-    {
-        $this->role = $role;
-    }
-
 }
